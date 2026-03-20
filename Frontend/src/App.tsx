@@ -1,10 +1,15 @@
-import { Button } from "./components/ui/button"
+import { Routes, Route } from "react-router-dom";
+import Pathway from "./components/Pathway/Pathway";
+import Dashboard from "./components/Dashboard/Dashboard";
+import Home from "./components/Home/Home";
 
-const App = () => {
+function App() {
   return (
-    <>
-      App
-    </>
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/pathway" element={<Pathway />} />
+      <Route path="/dashboard" element={<Dashboard />} />
+    </Routes>
   )
 }
 

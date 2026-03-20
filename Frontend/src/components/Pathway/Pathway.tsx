@@ -2,8 +2,11 @@ import { ArrowLeft, ChevronDown } from "lucide-react"
 import { Button } from "../ui/button"
 import Card from "./Card"
 import { useRef, useState } from "react"
+import { useNavigate } from "react-router-dom"
 
 const Pathway = () => {
+
+  const navigate = useNavigate()
 
   const sectionRefs = useRef<(HTMLDivElement | null)[]>([])
 
@@ -72,7 +75,11 @@ const Pathway = () => {
   return (
     <div className="bg-background text-foreground p-4">
       <div>
-        <Button variant={"outline"} size={"icon"}>
+        <Button
+          variant={"outline"}
+          size={"icon"}
+          onClick={() => navigate("/dashboard")}
+        >
           <ArrowLeft />
         </Button>
       </div>
@@ -93,7 +100,7 @@ const Pathway = () => {
           <div>37% shorter than standard onboarding</div>
         </div>
       </div>
-      <div className="flex flex-col md:flex-row gap-8 px-0 sm:py-4 py-4">
+      <div className="flex flex-col md:flex-row gap-8 px-0 sm:px-4 py-4">
         <div className="md:sticky top-8 border h-fit w-full md:w-fit md:max-w-70 px-1.5 py-2.5 rounded-md">
           <div className="flex items-center justify-between gap-2.5">
             <div className="text-muted-foreground text-sm ml-2.5">Modules</div>
