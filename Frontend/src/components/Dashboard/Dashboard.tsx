@@ -76,8 +76,6 @@ function Dashboard() {
           </div>
         ))}
       </div>
-
-      {/* MiniNav Tabs */}
       <div className="sm:p-4">
         <div className="w-full overflow-x-scroll no-scrollbar">
           <div className="w-fit flex flex-row text-sm gap-2.5">
@@ -96,8 +94,6 @@ function Dashboard() {
             ))}
           </div>
         </div>
-
-        {/* Skills Content */}
         <div className="mt-4 rounded-md p-4 bg-card overflow-x-auto">
           {miniNav.map((nav, index) => {
             if (index !== activeTab) return null;
