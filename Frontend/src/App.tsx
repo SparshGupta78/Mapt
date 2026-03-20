@@ -1,7 +1,7 @@
+import Home from "./pages/Home"
 import { Routes, Route } from "react-router-dom";
 import Pathway from "./components/Pathway/Pathway";
 import Dashboard from "./components/Dashboard/Dashboard";
-import Home from "./components/Home/Home";
 
 function App() {
   return (
