@@ -45,7 +45,16 @@ const Home = () => {
             </div>
 
             <div className="mt-8 flex justify-end gap-4">
-              <Button variant="outline" className="p-5">
+              <Button
+                variant="outline"
+                className="p-5"
+                onClick={() => {
+                  window.scrollTo({
+                    top: window.innerHeight,
+                    behavior: "smooth"
+                  })
+                }}
+              >
                 Get Started
               </Button>
               <Button className="p-5">
@@ -152,6 +161,10 @@ const Home = () => {
             <div className="mt-4 flex gap-2.5 justify-between">
               <Button variant="ghost">Reset</Button>
               <Button type="submit">Submit</Button>
+            </div>
+            <div className="w-full flex items-center justify-center gap-1 text-sm text-muted-foreground">
+              Want to skip?
+              <Button variant={"link"} className="px-0">Fill with demo data</Button>
             </div>
           </div>
         </div>
