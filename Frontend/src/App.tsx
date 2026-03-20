@@ -1,11 +1,13 @@
+import SkillGap from "./components/Skill-gap/Skill-Gap"
 import { Button } from "./components/ui/button"
 
 const App = () => {
   return (
     <div>
-      <Button>
+      {/* <Button>
         Hello world
-      </Button>
+      </Button> */}
+      <SkillGap/>
     </div>
   )
 }
