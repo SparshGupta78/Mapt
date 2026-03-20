@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/dialog"
 import { Button } from "../ui/button"
 import { useState } from "react"
+import { useNavigate } from "react-router-dom"
 
 type props = {
   id: string,
@@ -24,6 +25,8 @@ type props = {
 const Card = (cardInfo: props) => {
 
   const [dialogOpen, setDialogOpen] = useState(false)
+
+  const navigate = useNavigate();
 
   return (
     <div>
@@ -51,7 +54,7 @@ const Card = (cardInfo: props) => {
           ))}
         </div>
         <div className="mt-8 flex flex-wrap gap-2.5">
-          <Button className="w-full sm:w-fit">
+          <Button className="w-full sm:w-fit" onClick={()=>(navigate(`/pathway/${cardInfo.id}`))}>
             Start module
           </Button>
           <Dialog
