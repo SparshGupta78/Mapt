@@ -73,12 +73,12 @@ function ModulesDocs() {
                     <ArrowLeft />
                 </Button>
             </div>
-            <div className="px-2.5 sm:px-4 py-6 w-full">
-
-                {modules.map((m, idx) => {
+            <div className="px-2.5 sm:px-4 py-4 w-full">
+                {modules.map((m, i) => {
                     if (m.id === id) {
                         return (
                             <HeaderCard
+                                key={i}
                                 id={m.id}
                                 title={m.title}
                                 description={m.description}
@@ -90,22 +90,27 @@ function ModulesDocs() {
                             />
                         )
                     }
-
                 })}
-
             </div>
-            <div className="flex flex-col md:flex-row gap-8 px-0 sm:py-4 py-4">
-                <div className="w-100 sm:w-2xl md:w-4xl flex flex-col gap-8 rounded-md p-5 mx-auto border ">
+            <div className="pt-4 grid place-items-center">
+                <div className="w-full max-w-225 rounded-md p-4 border">
                     {modules.map((m, i) => {
                         if (m.id === id) {
                             return (
                                 <div
-                                >                           {m.content}
+                                    key={i}
+                                >
+                                    {m.content}
                                 </div>
                             )
                         }
                     })}
-                    <Button className="ml-50 sm:ml-120 md:ml-170 w-fit" >Mark As Completed <Check /></Button>
+                    <div className="mt-5 w-full flex justify-end">
+                        <Button>
+                            <Check />
+                            Mark as completed
+                        </Button>
+                    </div>
                 </div>
             </div>
 
