@@ -2,11 +2,18 @@ import { Request, Response, Router } from "express";
 import dotenv from "dotenv";
 import upload from "../middleware/multer";
 import { FormModel } from "../middleware/form";
-import multer = require("multer");
+import multer = require("multer")
+
+import { signup } from "../login/signup.controller";
+import { login } from "../login/login.controller";;
 
 dotenv.config();
 
 const router = Router()
+
+
+router.post("/signup", signup);
+router.post("/login", login);
 
 router.post(
   "/upload",
