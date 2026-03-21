@@ -13,7 +13,7 @@ export const uploadResumeWithDetails = async (
   formData.append("experience", experience)
   formData.append("reason", reason)
 
-  const res = await api.post("/upload", formData)
+  const res = await api.post("/user/upload", formData)
 
   return res.data
 }

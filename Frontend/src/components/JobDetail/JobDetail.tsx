@@ -65,20 +65,18 @@ const JobDetail = () => {
 
     try {
       setLoading(true)
-
       await uploadResumeWithDetails(
         resume,
         job,
         experience,
         reason
       )
-
       toast("Upload successful", {
         description: "Your resume has been uploaded and processed"
       })
-
       navigate("/dashboard")
     } catch (err) {
+      console.log(err)
       toast("Upload failed", {
         description:
           "We couldn’t process your resume. Please try again"

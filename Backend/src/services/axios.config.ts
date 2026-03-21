@@ -1,7 +1,7 @@
 import axios from "axios"
 
 const api = axios.create({
-  baseURL: process.env.EXTERNAL_API_BASE_URL,
+  baseURL: process.env.AI_PATH,
   timeout: 5000
 })
 

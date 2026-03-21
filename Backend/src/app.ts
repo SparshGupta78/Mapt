@@ -2,7 +2,7 @@ import express from 'express'
 import cors from 'cors'
 import mongoose from 'mongoose'
 import dotenv from 'dotenv'
-import userRouter from './routes/user.router'
+import router from './routes'
 
 dotenv.config()
 
@@ -12,7 +12,7 @@ app.use(cors())
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 
-app.use(userRouter)
+app.use(router)
 
 mongoose
   .connect(process.env.DB_PATH as string)

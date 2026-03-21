@@ -1,6 +1,8 @@
 import { Request, Response } from "express"
 import { FormModel } from "../middleware/JobSchema"
 import api from "../services/axios.config"
+import User from "../model/user.model"
+import UserType from "../types/userAuth.type"
 
 export const uploadResume = async (req: Request, res: Response) => {
   try {
@@ -31,11 +33,13 @@ export const uploadResume = async (req: Request, res: Response) => {
       reason
     })
     await newEntry.save()
+    const response = await api.get("")
     res.status(200).json({
       success: true,
-      data: newEntry
+      data: response.data
     })
   } catch (err) {
+    console.log(err)
     res.status(500).json({
       success: false,
       message: "Internal server error"
@@ -43,17 +47,29 @@ export const uploadResume = async (req: Request, res: Response) => {
   }
 }
 
-export const courses = async (req: Request, res: Response) => {
+export const markModuleComplete = async (req: Request, res: Response) => {
   try {
-    const response = await api.get("/modules")
-    res.status(200).json({
-      success: true,
-      data: response.data
+    const user = req.user as Omit<UserType, 'notes'> | undefined
+    const { moduleId } = req.body
+
+    if (!user || !moduleId) {
+      return res.status(400).json({ error: "moduleId is required" })
+    }
+
+    const updatedUser = await User.findByIdAndUpdate(
+      {username: user.username},
+      { $addToSet: { completedModules: moduleId } },
+      { new: true }
+    )
+    if (!updatedUser) return res.status(500).json({error: "Internal server error"})
+    return res.status(200).json({
+      message: "Module marked as completed",
+      completedModules: updatedUser.completedModules
     })
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: "Failed to fetch modules"
+
+  } catch (err) {
+    return res.status(500).json({
+      error: "Failed to mark module as complete"
     })
   }
 }

@@ -3,40 +3,53 @@ import { Input } from "../ui/input"
 import { Button } from "../ui/button"
 import Beams from "../Background/Beams"
 import { useNavigate } from "react-router-dom"
+import useAuthAPI from "@/services/auth.service"
 
 function Signup() {
 
+    const { signUpAPI } = useAuthAPI()
     const navigate = useNavigate()
 
-    const handleSubmit = ()=>{
-
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault()
+        const formData = new FormData(e.currentTarget)
+        const payload = {
+            name: formData.get("name") as string,
+            email: formData.get("email") as string,
+            username: formData.get("username") as string,
+            password: formData.get("password") as string,
+        }
+        await signUpAPI(payload)
     }
 
     return (
         <div className="relative min-h-dvh h-fit overflow-hidden bg-linear-to-r from-transparent via-background/70 to-background">
             <div className="absolute inset-0 -z-10">
-            <Beams />
+                <Beams />
             </div>
             <div className="p-4 absolute top-0 left-0 w-full flex items-center justify-between gap-2.5">
                 <div className="text-3xl">Mapt</div>
-                <Button className="" variant={"secondary"} onClick={()=>(navigate("/login"))}>
+                <Button variant={"secondary"} onClick={() => navigate("/login")}>
                     Login
                 </Button>
             </div>
             <div className="min-h-dvh h-full p-4 w-full flex items-end flex-col">
-                <form className="grow h-full p-4 sm:px-15 w-full max-w-120 flex flex-col justify-center items-center" onSubmit={handleSubmit}>
-                    <FieldGroup className="">
+                <form
+                    className="grow h-full p-4 sm:px-15 w-full max-w-120 flex flex-col justify-center items-center"
+                    onSubmit={handleSubmit}
+                >
+                    <FieldGroup>
                         <Field>
-                            <FieldLabel htmlFor="fieldgroup-name">Name</FieldLabel>
-                            <Input id="fieldgroup-name" placeholder="Rahul Singh" />
+                            <FieldLabel htmlFor="name">Name</FieldLabel>
+                            <Input id="name" name="name" placeholder="Rahul Singh" />
                         </Field>
-
                         <Field>
-                            <FieldLabel htmlFor="fieldgroup-email">Email
-                                <span className="text-destructive">*</span>
+                            <FieldLabel htmlFor="email">
+                                Email <span className="text-destructive">*</span>
                             </FieldLabel>
                             <Input
-                                id="fieldgroup-email"
+                                id="email"
+                                name="email"
                                 type="email"
                                 placeholder="name@example.com"
                                 required
@@ -45,11 +58,11 @@ function Signup() {
                                 We&apos;ll send updates to this address.
                             </FieldDescription>
                         </Field>
-
                         <Field>
-                            <FieldLabel htmlFor="input-field-username">Username</FieldLabel>
+                            <FieldLabel htmlFor="username">Username</FieldLabel>
                             <Input
-                                id="input-field-username"
+                                id="username"
+                                name="username"
                                 type="text"
                                 placeholder="Enter your username"
                             />
@@ -57,13 +70,13 @@ function Signup() {
                                 Choose a unique username for your account.
                             </FieldDescription>
                         </Field>
-
                         <Field>
-                            <FieldLabel htmlFor="input-field-password">Password
-                                <span className="text-destructive">*</span>
+                            <FieldLabel htmlFor="password">
+                                Password <span className="text-destructive">*</span>
                             </FieldLabel>
                             <Input
-                                id="input-field-password"
+                                id="password"
+                                name="password"
                                 type="password"
                                 placeholder="Enter your Password"
                                 required
@@ -72,7 +85,6 @@ function Signup() {
                                 Choose a strong password for your account.
                             </FieldDescription>
                         </Field>
-
                         <Field orientation="horizontal">
                             <Button type="reset" variant="outline">
                                 Reset
