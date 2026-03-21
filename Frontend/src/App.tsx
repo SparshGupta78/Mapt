@@ -5,6 +5,7 @@ import Home from "./components/Home/Home";
 import ModulesDocs from "./components/Module/ModuleDocs";
 import Signup from "./components/Signup/Signup";
 import Login from "./components/Login/Login";
+import { Toaster } from "sonner";
 
 function App() {
   return (
