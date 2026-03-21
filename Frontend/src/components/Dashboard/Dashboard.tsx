@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Progress } from "../ui/progress";
 import { useNavigate } from "react-router-dom";
 import MermaidDiagram from "./MermaidDiagram";
+import { Minus, Plus } from "lucide-react";
 
 function Dashboard() {
 
@@ -70,7 +71,7 @@ const time = "4hrs ago";
         { skillTitle: "Skill 4", progress: 95 },
       ],
     },
-  ];
+  ]
 
   const [activeTab, setActiveTab] = useState(0);
 
@@ -97,12 +98,8 @@ const time = "4hrs ago";
           </Button>
         </div>
       </div>
-
-      <div className="flex flex-col-reverse sm:flex-row gap-10">
-
-
-        <div className="">
-
+      <div className="flex flex-col-reverse sm:flex-row justify-evenly">
+        <div className="grow">
           <div className="sm:px-4 py-6 w-full flex flex-wrap justify-start gap-4">
             {stats.map((stat, index) => (
               <div key={index} className="w-full sm:w-fit sm:min-w-40 md:max-w-60 border rounded-md bg-card p-5 grow shrink">
@@ -112,8 +109,6 @@ const time = "4hrs ago";
               </div>
             ))}
           </div>
-
-
           <div className="sm:p-4">
             <div className="w-full overflow-x-scroll no-scrollbar">
               <div className="w-fit flex flex-row text-sm gap-2.5">
@@ -123,7 +118,7 @@ const time = "4hrs ago";
                     className={`pb-1.5 px-2 whitespace-nowrap cursor-default duration-300
                   ${activeTab === index
                         ? "border-b-2 border-muted-foreground font-semibold"
-                        : "border-transparent text-muted-foreground hover:text-white hover:border-gray-500"
+                        : "border-transparent text-muted-foreground hover:text-foreground hover:border-gray-500"
                       }`}
                     onClick={() => setActiveTab(index)}
                   >
@@ -156,15 +151,23 @@ const time = "4hrs ago";
 
         </div>
 
-        <div className="w-full sm:w-120 border bg-card rounded-md">
-          {/* Controls */}
-          <div className="flex gap-2 p-2 border-b">
-            <Button className="text-center" variant={"secondary"} onClick={() => setZoom(z => z + 0.2)}>+</Button>
-            <Button className="text-center" variant={"secondary"} onClick={() => setZoom(z => Math.max(0.4, z - 0.2))}>-</Button>
+        <div className="sm:mx-4 my-4 w-full sm:w-fit max-w-120 border bg-card rounded-md">
+          <div className="flex justify-end gap-2.5 p-2 border-b">
+            <Button
+              variant={"ghost"}
+              size={"icon"}
+              onClick={() => setZoom(z => z + 0.2)}
+            >
+              <Plus />
+            </Button>
+            <Button
+              variant={"ghost"}
+              size={"icon"}
+              onClick={() => setZoom(z => Math.max(0.4, z - 0.2))}>
+                <Minus />
+              </Button>
           </div>
-
-          {/* Zoom Container */}
-          <div className="overflow-auto h-[70dvh]">
+          <div className="p-2.5 flex justify-center overflow-auto h-full max-h-[70dvh]">
             <div
               style={{
                 transform: `scale(${zoom})`,
@@ -179,7 +182,6 @@ const time = "4hrs ago";
 
 
       </div>
-
     </div>
   );
 }
