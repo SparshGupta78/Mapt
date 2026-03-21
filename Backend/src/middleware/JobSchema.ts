@@ -15,6 +15,6 @@ const FormSchema = new Schema(
     reason: { type: String, required: true },
   },
   { timestamps: true }
-);
+)
 
-export const FormModel = mongoose.model<IForm>("Form", FormSchema);
+export const FormModel = mongoose.model<IForm>("Form", FormSchema)
