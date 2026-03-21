@@ -9,28 +9,19 @@ import {
 } from "@/components/ui/dialog"
 import { Button } from "../ui/button"
 import { useState } from "react"
+import type { Course } from "@/types/courseTypes"
 
-type props = {
-    id: string,
-    title: string,
-    description: string,
-    tags: string[],
-    duration: number,
-    track: string,
-    weeks: string,
-    reason: string
-}
-
-const HeaderCard = (cardInfo: props) => {
+const HeaderCard = (cardInfo: Course) => {
 
     const [dialogOpen, setDialogOpen] = useState(false)
 
     return (
         <>
+            <div className=""></div>
             <div className="flex items-center gap-2.5 justify-between">
-                <div className="flex items-center gap-2.5 ">
-                    <div className="capitalize px-2.5 py-1.25 bg-muted text-xs rounded-sm">{cardInfo.track}</div>
-                    <div className="text-xs text-muted-foreground">{cardInfo.duration + " hours"}</div>
+                <div className="flex items-center gap-2.5">
+                    <div className="capitalize px-2.5 py-1.25 bg-muted text-xs rounded-sm">{cardInfo.category}</div>
+                    <div className="capitalize px-2.5 py-1.25 text-muted-foreground text-xs rounded-sm">{cardInfo.level}</div>
                 </div>
 
                 <div>
@@ -53,7 +44,7 @@ const HeaderCard = (cardInfo: props) => {
                                         {cardInfo.title}
                                     </div>
                                     <div className="mt-4 text-muted-foreground">
-                                        {cardInfo.reason}
+                                        {/* {cardInfo.reason} */}
                                     </div>
                                     <DialogDescription className="mt-4 w-full flex justify-end">
                                         <DialogClose asChild>
