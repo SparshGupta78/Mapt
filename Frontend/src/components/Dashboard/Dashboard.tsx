@@ -1,173 +1,167 @@
-import { Button } from "../ui/button";
-import { useState } from "react";
-import { Progress } from "../ui/progress";
-import { useNavigate } from "react-router-dom";
-import MermaidDiagram from "./MermaidDiagram";
-import { Minus, Plus } from "lucide-react";
+import { Button } from "../ui/button"
+import { Card, CardContent } from "../ui/card"
+import { Badge } from "../ui/badge"
+import { Progress } from "../ui/progress"
+import { useNavigate } from "react-router-dom"
+import MermaidDiagram from "./MermaidDiagram"
+import { Minus, Plus } from "lucide-react"
+import { useState } from "react"
+import { useOutput } from "@/context/CourseContext"
+import { FileX } from "lucide-react"
 
 function Dashboard() {
-
+  const { output } = useOutput()
   const navigate = useNavigate()
-  const [zoom, setZoom] = useState(1);
-  
-const code = `flowchart TD
-    A([Start — current skills]):::start
-    subgraph W1["Week 1 — Core Python"]
-      B[CS-PY-101
-Python Programming Fundamentals]:::gap
-    end
-    subgraph W2["Week 2 — Backend frameworks"]
-      C[CS-FAST-101
-REST API Development with FastAPI]:::gap
-    end
-    subgraph W3["Week 3 — Data layer"]
-      D[CS-DB-101
-SQL Fundamentals for Backend Developers]:::gap
-    end
-    subgraph W4["Week 4 — Deployment ready"]
-      E[CS-DOCKER-101
-Docker & Containerization Fundamentals]:::gap
-    end
-    Z([Role-ready — Backend Developer]):::done
-    A --> B
-    B --> C
-    C --> D
-    D --> E
-    E --> Z
-    classDef gap   fill:#EEEDFE,stroke:#534AB7,color:#26215C
-    classDef known fill:#E1F5EE,stroke:#0F6E56,color:#085041
-    classDef start fill:#1D9E75,stroke:#0F6E56,color:#E1F5EE
-    classDef done  fill:#534AB7,stroke:#3C3489,color:#EEEDFE`
+  const [zoom, setZoom] = useState(1)
 
-const time = "4hrs ago";
-  const organisation = "Acme Corp";
-  const role = "Senior Frontend Engineer";
+  if (!output) {
+    return (
+      <div className="flex items-center justify-center py-20">
+        <Card className="w-full max-w-md text-center">
+          <CardContent className="flex flex-col items-center gap-4 p-8">
+            <div className="p-3 rounded-full bg-muted">
+              <FileX className="h-6 w-6 text-muted-foreground" />
+            </div>
+            <div className="space-y-1">
+              <h3 className="text-lg font-semibold">
+                No Content Available
+              </h3>
+              <p className="text-sm text-muted-foreground">
+                Upload your resume and details to see insights and roadmap here.
+              </p>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    )
+  }
 
-  const miniNav = [
+  const candidateName = output.candidate_name || output.final_roadmap?.candidate_name
+  const role = output.skill_gap_analysis_data.job_title
+  const summary = output.skill_gap_analysis_data.executive_summary
+  const gaps = output.skill_gap_analysis_data.analyzed_gaps
+  const high = gaps.filter(g => g.priority === "high").length
+  const medium = gaps.filter(g => g.priority === "medium").length
+  const readiness = Math.max(0, 100 - (high * 20 + medium * 10))
+  const trainingWeeks = output.final_roadmap.roadmap.length
+
+  const statsConfig = [
     {
-      miniNavTitle: "Critical Gap",
-      content: [
-        { skillTitle: "Skill 1", progress: 5 },
-        { skillTitle: "Skill 2", progress: 10 },
-        { skillTitle: "Skill 3", progress: 40 },
-        { skillTitle: "Skill 4", progress: 20 },
-      ],
+      label: "Readiness",
+      value: `${readiness}%`
     },
     {
-      miniNavTitle: "Partial Matches",
-      content: [
-        { skillTitle: "Skill 1", progress: 40 },
-        { skillTitle: "Skill 2", progress: 45 },
-        { skillTitle: "Skill 3", progress: 50 },
-        { skillTitle: "Skill 4", progress: 55 },
-      ],
+      label: "Critical Gaps",
+      value: high
     },
     {
-      miniNavTitle: "Strong Matches",
-      content: [
-        { skillTitle: "Skill 1", progress: 85 },
-        { skillTitle: "Skill 2", progress: 80 },
-        { skillTitle: "Skill 3", progress: 70 },
-        { skillTitle: "Skill 4", progress: 95 },
-      ],
+      label: "Training Time",
+      value: `${trainingWeeks} wks`
     },
+    {
+      label: "Adaptation",
+      value: output.skill_gap_analysis_data.is_fresher_adaptation_needed
+        ? "Fresher Adaptation"
+        : "Standard",
+      small: true
+    }
   ]
-
-  const [activeTab, setActiveTab] = useState(0);
-
-  const stats = [
-    { statTitle: "Readiness Score", statValue: "64%", statMessage: "13 of 21 skills matched" },
-    { statTitle: "Critical Gaps", statValue: "4", statMessage: "High Priority Skills to acquire" },
-    { statTitle: "Training Time", statValue: "8 wks", statMessage: "Estimated to reach compentency" },
-    { statTitle: "Content Skipped", statValue: "37%", statMessage: "vs. standard onboarding" }
-  ];
 
   return (
     <div className="bg-background min-h-screen text-foreground p-4">
-      <div className="flex flex-col sm:flex-row justify-between gap-2.5 sn:px-4 py-4 rounded-lg">
-        <div>
-          <span className="text-muted-foreground text-sm">Skill Gap Analysis</span>
-          <h1 className="text-2xl mt-2.5">Resume vs. {role}</h1>
-          <span className="text-sm text-muted-foreground">{organisation} • Analyzed {time}</span>
-        </div>
-        <div className="w-full sm:w-fit flex justify-end">
-          <Button
-            onClick={() => navigate("/pathway")}
-          >
+      <div className="p-4">
+        <div className="w-full flex justify-between items-center gap-2.5">
+          <div className="text-muted-foreground text-sm">
+            Skill Gap Analysis
+          </div>
+          <Button onClick={() => navigate("/pathway")}>
             View Pathway
           </Button>
         </div>
+        <div className="text-2xl mt-4">
+          {candidateName} vs. {role}
+        </div>
+        <div className="text-sm text-muted-foreground mt-2 w-full">
+          {summary}
+        </div>
       </div>
-      <div className="flex flex-col-reverse sm:flex-row justify-evenly">
-        <div className="grow">
-          <div className="sm:px-4 py-6 w-full flex flex-wrap justify-start gap-4">
-            {stats.map((stat, index) => (
-              <div key={index} className="w-full sm:w-fit sm:min-w-40 md:max-w-60 border rounded-md bg-card p-5 grow shrink">
-                <h2 className="text-muted-foreground">{stat.statTitle}</h2>
-                <h1 className="text-foreground text-2xl py-2.5">{stat.statValue}</h1>
-                <h1 className="text-muted-foreground text-sm">{stat.statMessage}</h1>
-              </div>
+      <div className="p-4 flex flex-col-reverse sm:flex-row gap-8">
+        <div className="flex-1 space-y-4">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {statsConfig.map((item, i) => (
+              <Card key={i}>
+                <CardContent>
+                  <div className="text-muted-foreground text-sm">
+                    {item.label}
+                  </div>
+                  <div className={`mt-2.5 ${item.small ? "text-sm" : "text-2xl font-semibold"}`}>
+                    {item.value}
+                  </div>
+                </CardContent>
+              </Card>
             ))}
           </div>
-          <div className="sm:p-4">
-            <div className="w-full overflow-x-scroll no-scrollbar">
-              <div className="w-fit flex flex-row text-sm gap-2.5">
-                {miniNav.map((nav, index) => (
-                  <div
-                    key={index}
-                    className={`pb-1.5 px-2 whitespace-nowrap cursor-default duration-300
-                  ${activeTab === index
-                        ? "border-b-2 border-muted-foreground font-semibold"
-                        : "border-transparent text-muted-foreground hover:text-foreground hover:border-gray-500"
-                      }`}
-                    onClick={() => setActiveTab(index)}
-                  >
-                    {nav.miniNavTitle}
+          <Card>
+            <CardContent className="p-4 space-y-6">
+              <h2 className="text-sm font-medium text-muted-foreground">
+                Critical Skill Gaps
+              </h2>
+              {gaps.map((gap, i) => (
+                <div key={i} className="space-y-3">
+                  <div className="flex justify-between items-center">
+                    <span className="font-medium">
+                      {gap.skill_name}
+                    </span>
+                    <Badge
+                      variant={
+                        gap.priority === "high" ? "destructive" : "secondary"}
+                    >
+                      {gap.priority}
+                    </Badge>
                   </div>
-                ))}
-              </div>
-            </div>
-            <div className="mt-4 rounded-md p-4 bg-card overflow-x-auto">
-              {miniNav.map((nav, index) => {
-                if (index !== activeTab) return null;
-                const skills = nav.content;
-                return (
-                  <div key={index} className="space-y-2 w-full">
-                    {skills.map((skill, idx) => (
-                      <div
-                        key={idx}
-                        className="flex items-center justify-between gap-4 py-1"
-                      >
-                        <span className="whitespace-nowrap w-fit">{skill.skillTitle}</span>
-                        <Progress value={skill.progress} className="w-full" />
-                        <span>{skill.progress}%</span>
-                      </div>
-                    ))}
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-
+                  <Progress
+                    value={
+                      gap.priority === "high" ? 25 : 50
+                    }
+                  />
+                  <p className="text-xs text-muted-foreground">
+                    {gap.reasoning}
+                  </p>
+                  <p className="text-xs text-muted-foreground">
+                    <span className="font-medium">
+                      Target:
+                    </span>{" "}
+                    {gap.target_competency}
+                  </p>
+                </div>
+              ))}
+            </CardContent>
+          </Card>
         </div>
 
-        <div className="sm:mx-4 my-4 w-full sm:w-fit max-w-120 border bg-card rounded-md">
+        {/* RIGHT SIDE (MERMAID) */}
+        <div className="w-full sm:w-105 border bg-card rounded-md">
           <div className="flex justify-end gap-2.5 p-2 border-b">
             <Button
-              variant={"ghost"}
-              size={"icon"}
+              variant="ghost"
+              size="icon"
               onClick={() => setZoom(z => z + 0.2)}
             >
               <Plus />
             </Button>
+
             <Button
-              variant={"ghost"}
-              size={"icon"}
-              onClick={() => setZoom(z => Math.max(0.4, z - 0.2))}>
-                <Minus />
-              </Button>
+              variant="ghost"
+              size="icon"
+              onClick={() =>
+                setZoom(z => Math.max(0.4, z - 0.2))
+              }
+            >
+              <Minus />
+            </Button>
           </div>
-          <div className="p-2.5 flex justify-center overflow-auto h-full max-h-[70dvh]">
+
+          <div className="p-2.5 flex justify-center overflow-auto max-h-[70dvh]">
             <div
               style={{
                 transform: `scale(${zoom})`,
@@ -175,15 +169,13 @@ const time = "4hrs ago";
                 width: "fit-content"
               }}
             >
-              <MermaidDiagram code={code} />
+              <MermaidDiagram code={output.mermaid_code} />
             </div>
           </div>
         </div>
-
-
       </div>
     </div>
-  );
+  )
 }
 
 export default Dashboard

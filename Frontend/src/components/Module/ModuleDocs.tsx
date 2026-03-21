@@ -2,17 +2,15 @@ import { ArrowLeft, Check } from "lucide-react"
 import { Button } from "../ui/button"
 import HeaderCard from "./HeaderCard"
 import { useNavigate, useParams } from "react-router-dom"
-import { useCourses } from "@/context/CourseContext"
+import catalog from "@/lib/Catalog"
 
 
 function ModulesDocs() {
 
     const navigate = useNavigate()
-    const { id } = useParams<{ id: string }>()
+    const { id } = useParams()
 
-    const { getCourseById } = useCourses();
-
-    const course = id ? getCourseById(id) : undefined;
+    const course = id ? catalog.find((c) => c.course_id === id) : undefined;
 
     if (!course) {
         return <div className="p-4 w-full h-dvh grid place-items-center text-muted-foreground">Course not found</div>;

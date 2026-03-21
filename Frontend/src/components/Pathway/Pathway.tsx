@@ -1,17 +1,20 @@
 import { ArrowLeft, ChevronDown } from "lucide-react"
 import { Button } from "../ui/button"
 import Card from "./Card"
-import { useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { useNavigate } from "react-router-dom"
-import { useCourses } from "@/context/CourseContext"
+import { useOutput } from "@/context/CourseContext"
+import type { Course } from "@/types/courseTypes"
+import catalog from "@/lib/Catalog"
 
 const Pathway = () => {
 
   const navigate = useNavigate()
 
-  const { courses } = useCourses()
+  const { output } = useOutput()
 
   const sectionRefs = useRef<(HTMLDivElement | null)[]>([])
+  const [courses, setCourses] = useState<Course[]>([])
 
   const [moduleOpen, setModuleOpen] = useState(true)
 
@@ -21,6 +24,16 @@ const Pathway = () => {
       block: "start"
     })
   }
+
+useEffect(() => {
+  if (!output) return
+
+  const ids = output.final_roadmap.roadmap.map(e => e.course_id)
+
+  const filteredCourses = catalog.filter(c => ids.includes(c.course_id))
+
+  setCourses(filteredCourses)
+}, [output])
 
   const totalHours = courses.reduce((sum, c) => sum + (c.estimated_duration_hours || 0), 0)
 

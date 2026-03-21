@@ -1,9 +1,7 @@
-export type CourseLevel = "beginner" | "intermediate" | "advanced";
-
 export interface Course {
   course_id: string;
   title: string;
-  level: CourseLevel;
+  level: string;
   category: string;
   description: string;
   learning_outcomes: string[];
