@@ -10,38 +10,28 @@ import {
 import { Button } from "../ui/button"
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
+import type { Course } from "@/types/courseTypes"
 
-type props = {
-  id: string,
-  title: string,
-  description: string,
-  tags: string[],
-  duration: number,
-  track: string,
-  weeks: string,
-  reason: string
-}
-
-const Card = (cardInfo: props) => {
+const Card = (cardInfo: Course) => {
 
   const [dialogOpen, setDialogOpen] = useState(false)
 
   const navigate = useNavigate();
 
   return (
-    <div>
+    <>
       <div className="text-xs my-2.5 flex items-center gap-2.5">
-        <span className="whitespace-nowrap text-muted-foreground">{cardInfo.weeks} weeks</span>
+        <span className="whitespace-nowrap text-muted-foreground">Expected {cardInfo.estimated_duration_hours ? cardInfo.estimated_duration_hours : 0} hours</span>
         <hr className="w-full" />
       </div>
       <div className="p-3 bg-card rounded-md">
         <div className="flex items-center gap-2.5">
-          <div className="capitalize px-2.5 py-1.25 bg-muted text-xs rounded-sm">{cardInfo.track}</div>
-          <div className="text-xs text-muted-foreground">{cardInfo.duration + " hours"}</div>
+          <div className="capitalize px-2.5 py-1.25 bg-muted text-xs rounded-sm">{cardInfo.category}</div>
+          <div className="capitalize text-xs text-muted-foreground">{cardInfo.level}</div>
         </div>
         <div className="px-2.5 py-6">
           <div className="text-xl">{cardInfo.title}</div>
-          <div className="mt-1 text-sm text-muted-foreground">{cardInfo.description}</div>
+          <div className="mt-1 text-sm text-muted-foreground">{cardInfo.description.slice(0, 50) + "..."}</div>
         </div>
         <div className="flex flex-wrap gap-1.5">
           {cardInfo.tags.length > 0 && cardInfo.tags.map((tag, i) => (
@@ -54,7 +44,7 @@ const Card = (cardInfo: props) => {
           ))}
         </div>
         <div className="mt-8 flex flex-wrap gap-2.5">
-          <Button className="w-full sm:w-fit" onClick={()=>(navigate(`/pathway/${cardInfo.id}`))}>
+          <Button className="w-full sm:w-fit" onClick={()=>(navigate(`/pathway/${cardInfo.course_id}`))}>
             Start module
           </Button>
           <Dialog
@@ -77,7 +67,7 @@ const Card = (cardInfo: props) => {
                     {cardInfo.title}
                   </div>
                   <div className="mt-4 text-muted-foreground">
-                    {cardInfo.reason}
+                    {/* {cardInfo.reason} */}
                   </div>
                   <DialogDescription className="mt-4 w-full flex justify-end">
                     <DialogClose asChild>
@@ -92,7 +82,7 @@ const Card = (cardInfo: props) => {
           </Dialog>
         </div>
       </div>
-    </div>
+    </>
   )
 }
 
