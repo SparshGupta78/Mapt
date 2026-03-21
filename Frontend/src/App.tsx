@@ -6,6 +6,7 @@ import ModulesDocs from "./components/Module/ModuleDocs";
 import Signup from "./components/Signup/Signup";
 import Login from "./components/Login/Login";
 import { Toaster } from "sonner";
+import JobDetail from "./components/JobDetail/JobDetail";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
         <Route path="/" element={<Home />} />
+        <Route path="/job-details" element={<JobDetail />} />
         <Route path="/pathway" element={<Pathway />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/pathway/:id" element={<ModulesDocs />} />
