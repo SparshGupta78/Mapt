@@ -1,10 +1,10 @@
 import { Router } from "express"
 import upload from "../middleware/multer"
-import { modules, uploadResume } from "../controllers/user.controller"
+import { courses, uploadResume } from "../controllers/user.controller"
 
 const userRouter = Router()
 
 userRouter.post("/upload", upload.single("file"), uploadResume)
-userRouter.post("/module", modules)
+userRouter.post("/courses", courses)
 
 export default userRouter

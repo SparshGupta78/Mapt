@@ -43,7 +43,7 @@ export const uploadResume = async (req: Request, res: Response) => {
   }
 }
 
-export const modules = async (req: Request, res: Response) => {
+export const courses = async (req: Request, res: Response) => {
   try {
     const response = await api.get("/modules")
     res.status(200).json({
