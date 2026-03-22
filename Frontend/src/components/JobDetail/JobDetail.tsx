@@ -18,11 +18,26 @@ const JobDetail = () => {
   const navigate = useNavigate()
 
   const jobs = [
-    "Frontend Engineer",
     "Backend Engineer",
-    "Full Stack Developer",
+    "Human Resources Manager",
     "UI/UX Designer",
-    "Product Manager"
+    "Sales Executive",
+    "Full Stack Developer",
+    "Marketing Specialist",
+    "Data Analyst",
+    "Customer Support Representative",
+    "Product Manager",
+    "DevOps Engineer",
+    "Content Writer",
+    "Business Analyst",
+    "Graphic Designer",
+    "Finance Manager",
+    "Frontend Engineer",
+    "Operations Manager",
+    "QA/Test Engineer",
+    "Legal Advisor",
+    "Social Media Manager",
+    "IT Support Specialist"
   ]
 
   const experiences = [

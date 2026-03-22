@@ -5,7 +5,7 @@ import cloudinary from "./cloudinary"
 const storage = new CloudinaryStorage({
   cloudinary,
   params: async (req, file) => ({
-    folder: "resumes",
+    folder: `threads/${req.user_id}`,
     resource_type: "raw",
     format: "pdf"
   })

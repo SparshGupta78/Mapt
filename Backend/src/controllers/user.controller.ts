@@ -33,7 +33,7 @@ export const uploadResume = async (req: Request, res: Response) => {
       reason
     })
     await newEntry.save()
-    const response = await api.get("")
+    const response = await api.post("", { user_id: req.user_id, job, experience, reason })
     res.status(200).json({
       success: true,
       data: response.data

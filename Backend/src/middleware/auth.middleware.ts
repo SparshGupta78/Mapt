@@ -8,6 +8,7 @@ declare global {
   namespace Express {
     interface Request {
       user?: string | JwtPayload
+      user_id: string
     }
   }
 }
